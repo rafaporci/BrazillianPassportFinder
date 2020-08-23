@@ -7,6 +7,6 @@ namespace PassportFinder.Service.Abstractions
 {
     public interface IAppointmentsAvailbilityReportSender
     {
-        bool Send(Dictionary<DPFCity, List<Tuple<DPFOffice, IReadOnlyCollection<string>>>> dictionaryResult);
+        bool Send(string[] emailListToNotify, Dictionary<DPFCity, List<Tuple<DPFOffice, IReadOnlyCollection<string>>>> dictionaryResult);
     }
 }

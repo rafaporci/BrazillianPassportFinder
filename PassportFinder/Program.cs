@@ -15,6 +15,15 @@ namespace PassportFinder
         static void Main(string[] args)
         {
             var logger = LogManager.GetCurrentClassLogger();
+
+            var input = new ReportInput();
+
+            input.EmailListToNotify = new string[1] { "myemail@email.com" };
+            input.CPF = "000.000.000-00"; // provide here a CPF
+            input.Protocol = "000000000000000000000"; // provide here a protocol
+            input.BirthDate = new DateTime(); // provide here a birth date
+            input.UF = "SP";
+
             try
             {
                 var config = new ConfigurationBuilder()
@@ -25,7 +34,7 @@ namespace PassportFinder
                 var servicesProvider = BuildDi(config);
                 using (servicesProvider as IDisposable)
                 {   
-                    servicesProvider.GetRequiredService<IAppointmentsAvailbilityReportGenerator>().Generate().Wait();
+                    servicesProvider.GetRequiredService<IAppointmentsAvailbilityReportGenerator>().Generate(input).Wait();
                 }
             }
             catch (Exception ex)

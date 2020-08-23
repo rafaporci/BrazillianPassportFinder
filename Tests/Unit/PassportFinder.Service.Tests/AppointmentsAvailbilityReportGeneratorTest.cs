@@ -38,6 +38,7 @@ namespace PassportFinder.Data.Tests.HtmlFinders
             // Arrange
             var sessionData = new Model.SessionData() { Cookie = Guid.NewGuid().ToString() };
             var cities = new List<Model.DPFCity>() { new Model.DPFCity() { Id = "1", Name = "SÃO PAULO" } };
+            var input = new ReportInput();
             var offices = new List<Model.DPFOffice>() {
                                 new Model.DPFOffice() { Id = "2025", Name = "SÃO PAULO OFFICE A", IsAppointmentMandatory = true  },
                                 new Model.DPFOffice() { Id = "2026", Name = "SÃO PAULO OFFICE B", IsAppointmentMandatory = false, Alerts = "Closed" },
@@ -66,8 +67,8 @@ namespace PassportFinder.Data.Tests.HtmlFinders
                 ));
             Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>> result = null;
             this.appointmentsAvailbilityReportSenderMock
-                .Setup(a => a.Send(It.IsAny<Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>>>()))
-                .Callback<Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>>>((obj) => result = obj)
+                .Setup(a => a.Send(It.IsAny<string[]>(), It.IsAny<Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>>>()))
+                .Callback<string[], Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>>>((emails, obj) => result = obj)
                 .Returns(true);            
             offices.ForEach(a => officesTuple.Add(new Tuple<DPFOffice, IReadOnlyCollection<string>>(a,
                                                                     a.Id == offices.LastOrDefault().Id ? 
@@ -76,7 +77,7 @@ namespace PassportFinder.Data.Tests.HtmlFinders
             Dictionary<DPFCity, List<Tuple<DPFOffice, IReadOnlyCollection<string>>>> expected = generateExpectedDictionary(cities, officesTuple);            
 
             // Act
-            await this.appointmentsAvailbilityReportGenerator.Generate(null, null, true);
+            await this.appointmentsAvailbilityReportGenerator.Generate(input, null, null, true);
 
             // Assert
             result.Should().BeEquivalentTo(expected);
@@ -87,6 +88,7 @@ namespace PassportFinder.Data.Tests.HtmlFinders
         {
             // Arrange
             var sessionData = new Model.SessionData() { Cookie = Guid.NewGuid().ToString() };
+            var input = new ReportInput();
             var cities = new List<Model.DPFCity>() { new Model.DPFCity() { Id = "1", Name = "SÃO PAULO" } };
             var offices = new List<Model.DPFOffice>() {
                                 new Model.DPFOffice() { Id = "2025", Name = "SÃO PAULO OFFICE A", IsAppointmentMandatory = true  },
@@ -111,14 +113,14 @@ namespace PassportFinder.Data.Tests.HtmlFinders
                 ));
             Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>> result = null;
             this.appointmentsAvailbilityReportSenderMock
-                .Setup(a => a.Send(It.IsAny<Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>>>()))
-                .Callback<Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>>>((obj) => result = obj)
+                .Setup(a => a.Send(It.IsAny<string[]>(), It.IsAny<Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>>>()))
+                .Callback<string[], Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>>>((emails, obj) => result = obj)
                 .Returns(true);
             offices.ForEach(a => officesTuple.Add(new Tuple<DPFOffice, IReadOnlyCollection<string>>(a, a.IsAppointmentMandatory ? alerts : null)));
             Dictionary<DPFCity, List<Tuple<DPFOffice, IReadOnlyCollection<string>>>> expected = generateExpectedDictionary(cities, officesTuple);
 
             // Act
-            await this.appointmentsAvailbilityReportGenerator.Generate(null, null, true);
+            await this.appointmentsAvailbilityReportGenerator.Generate(input, null, null, true);
 
             // Assert
             result.Should().BeEquivalentTo(expected);
@@ -129,6 +131,7 @@ namespace PassportFinder.Data.Tests.HtmlFinders
         {
             // Arrange
             var sessionData = new Model.SessionData() { Cookie = Guid.NewGuid().ToString() };
+            var input = new ReportInput();
             var cities = new List<Model.DPFCity>() { new Model.DPFCity() { Id = "1", Name = "SÃO PAULO" } };
             var offices = new List<Model.DPFOffice>() {
                                 new Model.DPFOffice() { Id = "2025", Name = "SÃO PAULO OFFICE A", IsAppointmentMandatory = true  },
@@ -152,14 +155,14 @@ namespace PassportFinder.Data.Tests.HtmlFinders
                 ));
             Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>> result = null;
             this.appointmentsAvailbilityReportSenderMock
-                .Setup(a => a.Send(It.IsAny<Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>>>()))
-                .Callback<Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>>>((obj) => result = obj)
+                .Setup(a => a.Send(It.IsAny<string[]>(), It.IsAny<Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>>>()))
+                .Callback<string[], Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>>>((emails, obj) => result = obj)
                 .Returns(true);
             offices.ForEach(a => officesTuple.Add(new Tuple<DPFOffice, IReadOnlyCollection<string>>(a, a.IsAppointmentMandatory ? new List<string>() : null)));
             Dictionary<DPFCity, List<Tuple<DPFOffice, IReadOnlyCollection<string>>>> expected = generateExpectedDictionary(cities, officesTuple);
 
             // Act
-            await this.appointmentsAvailbilityReportGenerator.Generate(null, null, true);
+            await this.appointmentsAvailbilityReportGenerator.Generate(input, null, null, true);
 
             // Assert
             result.Should().BeEquivalentTo(expected);
@@ -170,6 +173,7 @@ namespace PassportFinder.Data.Tests.HtmlFinders
         {
             // Arrange
             var sessionData = new Model.SessionData() { Cookie = Guid.NewGuid().ToString() };
+            var input = new ReportInput();
             var cities = new List<Model.DPFCity>() { new Model.DPFCity() { Id = "1", Name = "SÃO PAULO" } };
             var offices = new List<Model.DPFOffice>() {
                                 new Model.DPFOffice() { Id = "2025", Name = "SÃO PAULO OFFICE A", IsAppointmentMandatory = true  },
@@ -193,14 +197,14 @@ namespace PassportFinder.Data.Tests.HtmlFinders
                 ));
             Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>> result = null;
             this.appointmentsAvailbilityReportSenderMock
-                .Setup(a => a.Send(It.IsAny<Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>>>()))
-                .Callback<Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>>>((obj) => result = obj)
+                .Setup(a => a.Send(It.IsAny<string[]>(), It.IsAny<Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>>>()))
+                .Callback<string[], Dictionary<Model.DPFCity, List<Tuple<Model.DPFOffice, IReadOnlyCollection<string>>>>>((emails, obj) => result = obj)
                 .Returns(true);
             offices.ForEach(a => officesTuple.Add(new Tuple<DPFOffice, IReadOnlyCollection<string>>(a, a.IsAppointmentMandatory ? new List<string>() : null)));
             Dictionary<DPFCity, List<Tuple<DPFOffice, IReadOnlyCollection<string>>>> expected = generateExpectedDictionary(cities, officesTuple);
 
             // Act
-            await this.appointmentsAvailbilityReportGenerator.Generate(null, null, true);
+            await this.appointmentsAvailbilityReportGenerator.Generate(input, null, null, true);
 
             // Assert
             result.Should().BeEquivalentTo(expected);

@@ -24,22 +24,17 @@ namespace PassportFinder.Service
             this._logger = logger;
         }
 
-        public async Task Generate(IReadOnlyCollection<DPFCity> overrideDPFCities = null, string overrideUf = null, bool noDelaysExpected = false)
+        public async Task Generate(ReportInput input, IReadOnlyCollection<DPFCity> overrideDPFCities = null, string overrideUf = null, bool noDelaysExpected = false)
         {
             Dictionary<DPFCity, List<Tuple<DPFOffice, IReadOnlyCollection<string>>>> dictionaryResult = new Dictionary<DPFCity, List<Tuple<DPFOffice, IReadOnlyCollection<string>>>>();
 
             logInfo($"Starting report generation");
 
-            var cpf = ""; // provide here a CPF
-            var protocol = ""; // provide here a protocol
-            var birthDate = new DateTime(); // provide here a birth date
-            var uf = "SP";
-
-            var cities = await this._dpfGateway.GetAvailbleCities(cpf, protocol, birthDate);
+            var cities = await this._dpfGateway.GetAvailbleCities(input.CPF, input.Protocol, input.BirthDate);
             if (overrideDPFCities?.Count > 0)
                 cities.Data = overrideDPFCities;
             if (!String.IsNullOrEmpty(overrideUf))
-                uf = overrideUf;
+                input.UF = overrideUf;
 
             logInfo($"{cities.Data.Count} cities found");
 
@@ -65,7 +60,7 @@ namespace PassportFinder.Service
                     else if (office.IsAppointmentMandatory)
                     {
                         await randomDelay(noDelaysExpected);
-                        appointmentAlerts = (await this._dpfGateway.GetAppointmentAlertsFromOffice(cities.SessionData, uf, city.Id, office.Id)).Data;
+                        appointmentAlerts = (await this._dpfGateway.GetAppointmentAlertsFromOffice(cities.SessionData, input.UF, city.Id, office.Id)).Data;
                         if (appointmentAlerts.Count > 0)
                             logInfo($"Office with appoitment alerts '{appointmentAlerts.FirstOrDefault()}'.");
                     }
@@ -78,7 +73,7 @@ namespace PassportFinder.Service
                 logInfo($"City {city.Id}-{city.Name} checked");
             }
 
-            var emailSent = this._appointmentsAvailbilityReportSender.Send(dictionaryResult); 
+            var emailSent = this._appointmentsAvailbilityReportSender.Send(input.EmailListToNotify, dictionaryResult); 
 
             logInfo($"Report generation finished, email sent={emailSent}");
         }

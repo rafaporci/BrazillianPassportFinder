@@ -1,13 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
-using NLog;
-using PassportFinder.Data.Abstractions;
 using PassportFinder.Model;
 using PassportFinder.Service.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PassportFinder.Service
 {
@@ -22,13 +19,14 @@ namespace PassportFinder.Service
             this._logger = logger;
         }
 
-        public bool Send(Dictionary<DPFCity, List<Tuple<DPFOffice, IReadOnlyCollection<string>>>> dictionaryResult)
+        public bool Send(string[] emailListToNotify, Dictionary<DPFCity, List<Tuple<DPFOffice, IReadOnlyCollection<string>>>> dictionaryResult)
         {
-            return sendEmail(dictionaryResult);
+            return sendEmail(emailListToNotify, dictionaryResult);
         }
-        private bool sendEmail(Dictionary<DPFCity, List<Tuple<DPFOffice, IReadOnlyCollection<string>>>> dictionaryResult)
+
+        private bool sendEmail(string[] emailListToNotify, Dictionary<DPFCity, List<Tuple<DPFOffice, IReadOnlyCollection<string>>>> dictionaryResult)
         {
-            return this._emailNotifier.Send(new string[2] { "ac.jaen@gmail.com", "rafaporci@gmail.com" }, $"DPF Passaporte - Relatório - {DateTime.Now.ToString("dd/MM/yyyy HH:mm")}", generateInfoReport(dictionaryResult));
+            return this._emailNotifier.Send(emailListToNotify, $"DPF Passaporte - Relatório - {DateTime.Now.ToString("dd/MM/yyyy HH:mm")}", generateInfoReport(dictionaryResult));
         }
 
         private string generateInfoReport(Dictionary<DPFCity, List<Tuple<DPFOffice, IReadOnlyCollection<string>>>> dictionaryResult)

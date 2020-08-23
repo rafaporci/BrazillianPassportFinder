@@ -35,6 +35,7 @@ namespace PassportFinder.Data.Tests.HtmlFinders
         {
             // Arrange            
             var cities = new List<Model.DPFCity>() { new Model.DPFCity() { Id = "1", Name = "SÃO PAULO" } };
+            var input = new string[1] { "email@email.com" };
             var offices = new List<Model.DPFOffice>() {
                                 new Model.DPFOffice() { Id = "2025", Name = "SÃO PAULO OFFICE A", IsAppointmentMandatory = true  },
                                 new Model.DPFOffice() { Id = "2026", Name = "SÃO PAULO OFFICE B", IsAppointmentMandatory = false, Alerts = "Closed" },
@@ -64,7 +65,7 @@ namespace PassportFinder.Data.Tests.HtmlFinders
             };
 
             // Act
-            this.appointmentsAvailbilityReportSender.Send(dictionaryResult);
+            this.appointmentsAvailbilityReportSender.Send(input, dictionaryResult);
 
             // Assert
             expectedPhrases.ForEach(m => Assert.Contains(m, result));
@@ -76,6 +77,7 @@ namespace PassportFinder.Data.Tests.HtmlFinders
         {
             // Arrange            
             var cities = new List<Model.DPFCity>() { new Model.DPFCity() { Id = "1", Name = "SÃO PAULO" } };
+            var input = new string[1] { "email@email.com" };
             var offices = new List<Model.DPFOffice>() {
                                 new Model.DPFOffice() { Id = "2025", Name = "SÃO PAULO OFFICE A", IsAppointmentMandatory = true  },
                                 new Model.DPFOffice() { Id = "2026", Name = "SÃO PAULO OFFICE B", IsAppointmentMandatory = false, Alerts = "Closed" },
@@ -99,7 +101,7 @@ namespace PassportFinder.Data.Tests.HtmlFinders
             };
 
             // Act
-            this.appointmentsAvailbilityReportSender.Send(dictionaryResult);
+            this.appointmentsAvailbilityReportSender.Send(input, dictionaryResult);
 
             // Assert
             expectedPhrases.ForEach(m => Assert.Contains(m, result));
@@ -110,6 +112,7 @@ namespace PassportFinder.Data.Tests.HtmlFinders
         {
             // Arrange            
             var cities = new List<Model.DPFCity>() { new Model.DPFCity() { Id = "1", Name = "SÃO PAULO" } };
+            var input = new string[1] { "email@email.com" };
             var offices = new List<Model.DPFOffice>() {
                                 new Model.DPFOffice() { Id = "2025", Name = "SÃO PAULO OFFICE A", IsAppointmentMandatory = true  },
                                 new Model.DPFOffice() { Id = "2026", Name = "SÃO PAULO OFFICE B", IsAppointmentMandatory = false, Alerts = "Closed" },
@@ -135,7 +138,7 @@ namespace PassportFinder.Data.Tests.HtmlFinders
             };
 
             // Act
-            this.appointmentsAvailbilityReportSender.Send(dictionaryResult);
+            this.appointmentsAvailbilityReportSender.Send(input, dictionaryResult);
 
             // Assert
             expectedPhrases.ForEach(m => Assert.Contains(m, result));
@@ -148,6 +151,7 @@ namespace PassportFinder.Data.Tests.HtmlFinders
             // Arrange
             var sessionData = new Model.SessionData() { Cookie = Guid.NewGuid().ToString() };
             var cities = new List<Model.DPFCity>() { new Model.DPFCity() { Id = "1", Name = "SÃO PAULO" } };
+            var input = new string[1] { "email@email.com" };
             var offices = new List<Model.DPFOffice>() {
                                 new Model.DPFOffice() { Id = "2025", Name = "SÃO PAULO OFFICE A", IsAppointmentMandatory = true  },
                                 new Model.DPFOffice() { Id = "2026", Name = "SÃO PAULO OFFICE B", IsAppointmentMandatory = false },
@@ -173,7 +177,7 @@ namespace PassportFinder.Data.Tests.HtmlFinders
             };
 
             // Act
-            this.appointmentsAvailbilityReportSender.Send(dictionaryResult);
+            this.appointmentsAvailbilityReportSender.Send(input, dictionaryResult);
 
             // Assert
             expectedPhrases.ForEach(m => Assert.Contains(m, result));
