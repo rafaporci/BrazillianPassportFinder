@@ -28,4 +28,4 @@ Like all web scraping solution, this program was developed to retrieve data from
 
 ## Usage
 
-This project was created to exemplify how to retrieve data from complex portals for educational matters, if you have some doubt, please feel free to reach me.
+This project was created for educational matters to exemplify how to retrieve data from complex portals, if you have some doubt, please feel free to reach me.
