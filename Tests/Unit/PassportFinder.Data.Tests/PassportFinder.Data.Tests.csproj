@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\DPFOfficesPage_0Cities.html" />
+    <None Remove="Resources\DPFOfficesPage_0Cities_InvalidHTML.html" />
+    <None Remove="Resources\DPFOfficesPage_3Cities.html" />
+    <None Remove="Resources\DPFOfficesPage_ApoitmentPageScheduleInvalidHTML.html" />
+    <None Remove="Resources\DPFOfficesPage_ApoitmentPageScheduleWithAlerts.html" />
+    <None Remove="Resources\DPFOfficesPage_ApoitmentPageScheduleWithOutAlerts.html" />
+    <None Remove="Resources\DPFOfficesPage_ListOffices_InvalidHTML.html" />
+    <None Remove="Resources\DPFOfficesPage_ListOffices_JusWithOfficesWithApoint.html" />
+    <None Remove="Resources\DPFOfficesPage_ListOffices_WithOfficesWithAndWithoutApoint.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\DPFOfficesPage_0Cities_InvalidHTML.html" />
+    <EmbeddedResource Include="Resources\DPFOfficesPage_ApoitmentPageScheduleInvalidHTML.html" />
+    <EmbeddedResource Include="Resources\DPFOfficesPage_ApoitmentPageScheduleWithOutAlerts.html" />
+    <EmbeddedResource Include="Resources\DPFOfficesPage_ApoitmentPageScheduleWithAlerts.html" />
+    <EmbeddedResource Include="Resources\DPFOfficesPage_0Cities.html" />
+    <EmbeddedResource Include="Resources\DPFOfficesPage_3Cities.html" />
+    <EmbeddedResource Include="Resources\DPFOfficesPage_ListOffices_InvalidHTML.html" />
+    <EmbeddedResource Include="Resources\DPFOfficesPage_ListOffices_JusWithOfficesWithApoint.html" />
+    <EmbeddedResource Include="Resources\DPFOfficesPage_ListOffices_WithOfficesWithAndWithoutApoint.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <PackageReference Include="coverlet.collector" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PassportFinder.Data\PassportFinder.Data.csproj" />
+    <ProjectReference Include="..\..\Tests.Common\PassportFinder.Tests.Common.csproj" />
+  </ItemGroup>
+
+</Project>

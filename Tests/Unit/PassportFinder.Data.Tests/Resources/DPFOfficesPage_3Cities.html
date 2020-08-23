@@ -1,0 +1,311 @@
+﻿
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="pt-br">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Selecionar posto para agendamento - Divisão de Passaporte - Polícia Federal</title>
+
+    <!-- Estilo -->
+    <link href="/sinpa/jsp/v2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/sinpa/jsp/v2/css/sinpa.css" rel="stylesheet">
+</head>
+
+<body onload="$('#listaPostos');carregaPostos(window.document.getElementById('cidadePosto'),'S')">
+    <div id="corpo">
+
+        <!-- Menu -->
+
+
+        <noscript>
+            Este sistema usa scripts e seu navegador atual não suporta esta tecnologia.
+            Por favor, ative esta funcionalidade ou <a href="/sinpa/atualizarNavegador.do">atualize seu browser</a>.
+        </noscript>
+        <a name="atopo" id="atopo" class="sr-only">Início da página</a>
+        <div id="atalhos">
+            <div class="col-md-8">
+                <ul>
+                    <li><a href="#acontent" id="link-conteudo" accesskey="1">Ir para o conteúdo <span>1</span></a></li>
+                    <li><a href="#amenu" id="link-menu" accesskey="2">Ir para o menu principal <span>2</span></a></li>
+                    <li><a href="#arodape" id="link-rodape" accesskey="3">Ir para o fim da página <span>3</span></a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 text-right">
+                <ul>
+                    <li><a href="/sinpa/acessibilidade.do" accesskey="4">Acessibilidade <span>4</span></a></li>
+                    <li><a href="#" id="link-contraste" onclick="aplicarAltoContraste()" accesskey="5">Alto contraste <span>5</span></a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="cabecalho">
+            <div>
+                <div class="col-md-1" role="img">
+                    <img src="/sinpa/jsp/v2/images/logo.png" alt="Logotipo da Polícia Federal">
+                </div>
+                <div class="col-md-11">
+                    <div id="titulo">Divisão de passaporte</div>
+                    <small>Coordenação-Geral de Polícia de Imigração</small>
+                </div>
+            </div>
+        </div>
+
+
+        <a name="amenu" id="amenu" class="sr-only">Início do menu</a>
+        <nav class="navbar navbar-default">
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav" role="menubar">
+                    <div class="navbar-header">
+                        <a href="/sinpa/home.do" class="navbar-brand">
+                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                            <span class="sr-only">Instruções para obter seu passaporte</span>
+                        </a>
+                    </div>
+                    <li class="dropdown" role="menuitem">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-expanded="false">Solicitação de passaporte <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="menuitem"><a href="/sinpa/inicializacaoSolicitacao.do?dispatch=inicializarSolicitacaoPassaporte">Nova solicitação</a></li>
+                            <li role="menuitem"><a href="/sinpa/consultarSituacaoSolicitacao.do?dispatcher=exibirConsultaSituacaoSolicitacao">Consultar solicitação</a></li>
+                            <li role="menuitem"><a href="/sinpa/reemissaoGRU.do?dispatcher=exibirConsulta">Reemitir GRU de solicitação</a></li>
+                            <li role="menuitem"><a href="/sinpa/recuperarProtocolo.do?dispatcher=inicializar">Recuperar Nº do protocolo</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" role="menuitem">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-expanded="false">Agendamento de atendimento <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="menuitem"><a href="/sinpa/paginaInicialAgendamento.do">Agendar</a></li>
+                            <li role="menuitem"><a href="/sinpa/realizarReagendamento.do?dispatcher=exibirSolicitacaoReagendamento&validate=false">Reagendar</a></li>
+                            <li role="menuitem"><a href="/sinpa/realizarConsultaCancelamentoAgendamento.do?dispatcher=exibirConsultaCancelamentoAgendamento&validate=false">Consultar ou cancelar agendamento</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" role="menuitem">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-expanded="false">Outros serviços<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="menuitem"><a href="/sinpa/inicializacaoSolicitacao.do?dispatch=inicializarSolicitacaoAtualizacao">Solicitar atualização de informações</a></li>
+                            <li role="menuitem"><a href="/sinpa/inicializacaoSolicitacao.do?dispatch=inicializarSolicitacaoRegistroNacionalidade">Solicitar registro de nacionalidade</a></li>
+                            <li role="menuitem"><a href="/sinpa/formularioAIA.do?dispatch=exibirFormulario">Formulário de adoção internacional</a></li>
+                            <li><a href="/sinpa/pesquisaSatisfacao.do?dispatcher=exibirPesquisaSatisfacao&validate=false">Pesquisa de Satisfação</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <a name="acontent" id="acontent" class="sr-only">Início do conteúdo</a>
+
+        <!-- Barra de titulo e botoes de acessibilidade -->
+        <form name="realizarAgendamentoForm" method="post" action="/sinpa/realizarAgendamento.do" class="form-inline" id="formPostosAgendamento">
+            <input type="hidden" name="dispatcher" id="dispatcher" />
+            <input type="hidden" name="validate" id="validate" />
+            <input type="hidden" name="postoId" id="postoId" value="" />
+
+            <div id="principal">
+                <div id="acessibilidade" class="row">
+                    <div class="col-md-10 tituloPagina">
+                        <h1>Seleção do posto para agendamento</h1>
+                    </div>
+                    <!-- <div class="col-md-2 botoes_acessibilidade" aria-hidden="true">
+                        <div class="btn-group btn-group-sm" role="group">
+                          <a href="#"  class="btn btn-default rvfs-increase" title="Aumentar fonte" alt="Aumentar fonte" role="button">A+</a> <span class="hidden">|</span>
+                          <a href="#"  class="btn btn-default rvfs-decrease" title="Diminuir fonte" alt="Diminuir fonte" role="button">A-</a> <span class="hidden">|</span>
+                          <a href="#"  class="btn btn-black" title="Alto contraste" alt="Alto contraste" id="contraste" onclick="aplicarAltoContraste()" role="button">A</a>
+                        </div>
+                    </div> -->
+
+                </div>
+                <div class="erro" role="alert"></div>
+            </div> <!-- /principal -->
+
+            <div class="content" id="content">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="ufPosto">Estado:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="ufPosto" onchange="selecioneMunicipio();" id="ufPosto">
+                            <option value="AC">AC</option>
+                            <option value="AL">AL</option>
+                            <option value="AM">AM</option>
+                            <option value="AP">AP</option>
+                            <option value="BA">BA</option>
+                            <option value="CE">CE</option>
+                            <option value="DF">DF</option>
+                            <option value="ES">ES</option>
+                            <option value="GO">GO</option>
+                            <option value="MA">MA</option>
+                            <option value="MG">MG</option>
+                            <option value="MS">MS</option>
+                            <option value="MT">MT</option>
+                            <option value="PA">PA</option>
+                            <option value="PB">PB</option>
+                            <option value="PE">PE</option>
+                            <option value="PI">PI</option>
+                            <option value="PR">PR</option>
+                            <option value="RJ">RJ</option>
+                            <option value="RN">RN</option>
+                            <option value="RO">RO</option>
+                            <option value="RR">RR</option>
+                            <option value="RS">RS</option>
+                            <option value="SC">SC</option>
+                            <option value="SE">SE</option>
+                            <option value="SP" selected="selected">SP</option>
+                            <option value="TO">TO</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="cidadePosto">Município:</label>
+                    </div>
+                    <div class="col-md-6">
+                        <select name="cidadePosto" onchange="carregaPostos(this,'S')" id="cidadePosto">
+                            <option value=""></option>                            
+                            <option value="7107">SÃO PAULO</option>
+                            <option value="7115">SÃO SEBASTIÃO</option>
+                            <option value="7145">SOROCABA</option>
+                        </select>
+                    </div>
+                </div>
+
+
+
+                <div id="listaPostos">
+
+
+
+                    <div id="postos">
+                        <p>Não há nenhum posto com agendamento eletrônico disponível.</p>
+                    </div>
+
+
+
+                    <div id="postos">
+                        <h2>Postos que atendem SEM NECESSIDADE de agendamento eletrônico</h2>
+
+                        <div>
+                            <img src="imagens/SetaDireita.png" name="marcador" alt="Marcador"><a href="javascript:popup('1383',this.form)" id="postoSemAgendamento1383">
+                                ALPHA SHOPPING&nbsp;-&nbsp;
+                                PEP - ALPHA SHOPPING - SP&nbsp;-&nbsp;
+                                BARUERI /
+                                BARUERI /
+                                SP
+
+                                <font color="red"> (Temporariamente fechado - Emergência -->E-mail: migracao.sp@dpf.gov.br)</font>
+
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <h2>Dados pessoais</h2>
+
+                <br>
+
+
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <strong>Número do protocolo:</strong>
+                    </div>
+                    <div class="col-md-6">
+                        1.2020.0000767155
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <strong>Nome completo:</strong>
+                    </div>
+                    <div class="col-md-6">
+                        ANA CLÁUDIA SALVADOR JAEN ESQUIÇATO
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <strong>Telefone:</strong>
+                    </div>
+                    <div class="col-md-6">
+                        11983938477
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <strong>E-mail:</strong>
+                    </div>
+                    <div class="col-md-6">
+                        AC.JAEN@GMAIL.COM
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <!-- Javascripts -->
+    <a name="arodape" id="arodape" class="sr-only">Fim do conteúdo</a>
+    <a href="#atopo" id="link-topo" accesskey="6" class="sr-only">Voltar para o topo</a>
+
+
+
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/jquery.mask.min.js"></script>
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/jquery.browser.min.js"></script>
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/store.js"></script>
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/rv-jquery-fontsize.min.js"></script>
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" charset="ISO-8859-1" src="/sinpa/jsp/v2/js/sinpa.js"></script>
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/atualizar.browser.js"></script>
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/captcha.js"></script>
+
+    <script type="text/javascript">
+$("#audio").click( function() {
+	// A caixa de texto não pode receber o foco, pois dispara a leitura
+	//  do nome do campo pelo leitor de tela sobrepondo-se ao áudio do captcha.
+	play_sound("/sinpa/jcaptcha.do?dispatch=audioCaptcha&antiCache=" + Math.random());
+});
+
+$("#recarregarCaptcha").click( function() {
+	$("#imgCaptcha").attr("src", "/sinpa/jcaptcha.do?dispatch=imageCaptcha&antiCache=" + Math.random());
+});
+
+if ($("#imgCaptcha").length) {
+	setInterval(function(){
+	    $("#imgCaptcha").attr("src", "/sinpa/jcaptcha.do?dispatch=imageCaptcha&antiCache=" + Math.random());
+	},300000);
+}
+    </script>
+    <script type="text/javascript" charset="ISO-8859-1" src="/sinpa/jsp/v2/js/agendamento.js"></script>
+
+    <script type="text/javascript">
+    $("#ufPosto").change( function() {
+		$.ajax({
+			url: "/sinpa/listarCidadesPostos.do",
+			data: {ufPosto : this.value},
+			dataType: "xml",
+			context: $("#cidadePosto"),
+			success: function(result) {
+				target = $("#cidadePosto");
+				target.empty();
+				var itens = $(result).find("item");
+
+			    // Load the new options
+			    itens.each (function() {
+				    var name = $(this).find("name").text();
+			    	var value = $(this).find("value").text();
+			    	target.append(new Option(name, value));
+			    });
+			}
+		})
+	});
+    </script>
+
+</body>
+</html>

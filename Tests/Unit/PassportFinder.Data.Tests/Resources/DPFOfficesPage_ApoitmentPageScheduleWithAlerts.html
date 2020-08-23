@@ -1,0 +1,362 @@
+﻿
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="pt-br">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Efetuar agendamento - Divisão de Passaporte - Polícia Federal</title>
+
+    <!-- Estilo -->
+    <link href="/sinpa/jsp/v2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/sinpa/jsp/v2/css/sinpa.css" rel="stylesheet">
+
+    <!-- Calendário -->
+    <link href="/sinpa/jsp/v2/css/calendar-system-internet.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/calendar.js"></script>
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/calendar-pt.js"></script>
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/calendar-setup.js"></script>
+
+    <script type="text/javascript">
+        var datasDisponiveis = new Array();
+        var i = 0;
+
+
+
+        function selecionarData(cal) {
+
+            if (cal.dateClicked) {
+                var campoDataSelecionada = document.forms[0].dataAtendimento;
+                campoDataSelecionada.value = cal.date;
+                var y = cal.date.getFullYear();
+                var m = cal.date.getMonth() + 1;
+                var d = cal.date.getDate();
+                if (m < 10)
+                    m = "0" + m;
+                if (d < 10)
+                    d = "0" + d;
+                var dataFormatada = y + "-" + m + "-" + d;
+                setDispatcher("atualizarTelaInclusaoAgendamento");
+                $("#dataAtendimento").val(dataFormatada);
+                $("#formEfetuarAgendamento").submit();
+            }
+            return true;
+        }
+
+        function travarDatas(date, y, m, d) {
+
+            var dataAtualStr = date.getDate() + "/" + (date.getMonth() + 1) + "/"
+                + date.getFullYear();
+            var dataAtual = new Date.parseDate(dataAtualStr, "%d/%m/%Y");
+            var desabilitar = true;
+
+            for (i = 0; i < datasDisponiveis.length; i++) {
+                desabilitar = (datasDisponiveis[i].getTime() != dataAtual.getTime());
+                if (!desabilitar) {
+                    return desabilitar;
+                }
+            }
+            return desabilitar;
+        }
+
+
+        function paginaCarregada() {
+            enconderAlerta();
+        }
+    </script>
+
+
+
+</head>
+
+
+
+<body onload="paginaCarregada();">
+    <div id="corpo">
+
+        <!-- Menu -->
+
+
+        <noscript>
+            Este sistema usa scripts e seu navegador atual não suporta esta tecnologia.
+            Por favor, ative esta funcionalidade ou <a href="/sinpa/atualizarNavegador.do">atualize seu browser</a>.
+        </noscript>
+        <a name="atopo" id="atopo" class="sr-only">Início da página</a>
+        <div id="atalhos">
+            <div class="col-md-8">
+                <ul>
+                    <li><a href="#acontent" id="link-conteudo" accesskey="1">Ir para o conteúdo <span>1</span></a></li>
+                    <li><a href="#amenu" id="link-menu" accesskey="2">Ir para o menu principal <span>2</span></a></li>
+                    <li><a href="#arodape" id="link-rodape" accesskey="3">Ir para o fim da página <span>3</span></a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 text-right">
+                <ul>
+                    <li><a href="/sinpa/acessibilidade.do" accesskey="4">Acessibilidade <span>4</span></a></li>
+                    <li><a href="#" id="link-contraste" onclick="aplicarAltoContraste()" accesskey="5">Alto contraste <span>5</span></a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="cabecalho">
+            <div>
+                <div class="col-md-1" role="img">
+                    <img src="/sinpa/jsp/v2/images/logo.png" alt="Logotipo da Polícia Federal">
+                </div>
+                <div class="col-md-11">
+                    <div id="titulo">Divisão de passaporte</div>
+                    <small>Coordenação-Geral de Polícia de Imigração</small>
+                </div>
+            </div>
+        </div>
+
+
+        <a name="amenu" id="amenu" class="sr-only">Início do menu</a>
+        <nav class="navbar navbar-default">
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav" role="menubar">
+                    <div class="navbar-header">
+                        <a href="/sinpa/home.do" class="navbar-brand">
+                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                            <span class="sr-only">Instruções para obter seu passaporte</span>
+                        </a>
+                    </div>
+                    <li class="dropdown" role="menuitem">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-expanded="false">Solicitação de passaporte <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="menuitem"><a href="/sinpa/inicializacaoSolicitacao.do?dispatch=inicializarSolicitacaoPassaporte">Nova solicitação</a></li>
+                            <li role="menuitem"><a href="/sinpa/consultarSituacaoSolicitacao.do?dispatcher=exibirConsultaSituacaoSolicitacao">Consultar solicitação</a></li>
+                            <li role="menuitem"><a href="/sinpa/reemissaoGRU.do?dispatcher=exibirConsulta">Reemitir GRU de solicitação</a></li>
+                            <li role="menuitem"><a href="/sinpa/recuperarProtocolo.do?dispatcher=inicializar">Recuperar Nº do protocolo</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" role="menuitem">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-expanded="false">Agendamento de atendimento <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="menuitem"><a href="/sinpa/paginaInicialAgendamento.do">Agendar</a></li>
+                            <li role="menuitem"><a href="/sinpa/realizarReagendamento.do?dispatcher=exibirSolicitacaoReagendamento&validate=false">Reagendar</a></li>
+                            <li role="menuitem"><a href="/sinpa/realizarConsultaCancelamentoAgendamento.do?dispatcher=exibirConsultaCancelamentoAgendamento&validate=false">Consultar ou cancelar agendamento</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" role="menuitem">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-expanded="false">Outros serviços<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="menuitem"><a href="/sinpa/inicializacaoSolicitacao.do?dispatch=inicializarSolicitacaoAtualizacao">Solicitar atualização de informações</a></li>
+                            <li role="menuitem"><a href="/sinpa/inicializacaoSolicitacao.do?dispatch=inicializarSolicitacaoRegistroNacionalidade">Solicitar registro de nacionalidade</a></li>
+                            <li role="menuitem"><a href="/sinpa/formularioAIA.do?dispatch=exibirFormulario">Formulário de adoção internacional</a></li>
+                            <li><a href="/sinpa/pesquisaSatisfacao.do?dispatcher=exibirPesquisaSatisfacao&validate=false">Pesquisa de Satisfação</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <a name="acontent" id="acontent" class="sr-only">Início do conteúdo</a>
+
+        <!-- Barra de titulo e botoes de acessibilidade -->
+        <form name="realizarAgendamentoForm" method="post" action="/sinpa/realizarAgendamento.do" class="form-inline" id="formEfetuarAgendamento">
+            <input type="hidden" name="dispatcher" id="dispatcher" value="processarRealizarAgendamentoIntranet" />
+            <input type="hidden" name="origem" id="origem" value="exibirInclusaoAgendamento" />
+            <input type="hidden" name="dataSelecionada" id="dataSelecionada" value="" />
+            <input type="hidden" name="oldToken" id="oldToken" value="8249892377451315045" />
+
+            <div id="principal">
+                <div id="acessibilidade" class="row">
+                    <div class="col-md-10 tituloPagina">
+                        <h1>Efetuar Agendamento</h1>
+                    </div>
+                    <!-- <div class="col-md-2 botoes_acessibilidade" aria-hidden="true">
+                        <div class="btn-group btn-group-sm" role="group">
+                          <a href="#"  class="btn btn-default rvfs-increase" title="Aumentar fonte" alt="Aumentar fonte" role="button">A+</a> <span class="hidden">|</span>
+                          <a href="#"  class="btn btn-default rvfs-decrease" title="Diminuir fonte" alt="Diminuir fonte" role="button">A-</a> <span class="hidden">|</span>
+                          <a href="#"  class="btn btn-black" title="Alto contraste" alt="Alto contraste" id="contraste" onclick="aplicarAltoContraste()" role="button">A</a>
+                        </div>
+                    </div> -->
+
+                </div>
+                <div class="erro  hidden margem alert alert-danger" role="alert">
+
+                    Nenhum horário disponível. Consulte outro posto.
+
+
+                </div>
+            </div> <!-- /principal -->
+
+            <div>
+                <h2 class="text-center">Aviso Importante</h2>
+                <p>
+                    O serviço de agendamento foi criado para evitar filas e trazer comodidade
+                    para o seu atendimento.
+                </p>
+                <p>
+                    <strong>ATENÇÃO:</strong> Para a segurança do sistema e disponibilização do serviço a todos os cidadãos,
+                    serão permitidos no máximo 2 (dois) reagendamentos para o mesmo requerente no prazo de
+                    30 (trinta) dias, contados do primeiro agendamento. Após o segundo reagendamento,
+                    o sistema não admitirá novas tentativas até o esgotamento do prazo referido.
+                </p>
+            </div>
+
+            <div class="content" id="content">
+
+                <h2>Agendamento para Solicitação do Novo Passaporte</h2>
+
+                <p>
+                    Para o posto <strong>DEAIN/SR/PF/SP - DELEGACIA ESPECIAL DE POLICIA FEDERAL NO AEROPORTO INTERNACIONAL DE SÃO PAULO/GUARULHOS - DEAIN/SR/PF/SP</strong> foram disponibilizados horários até
+                    <strong>03 de Abril de 2020</strong>. As datas disponíveis estão relacionadas abaixo.
+                    Caso não apareça nenhuma data disponível até <strong>03 de Abril de 2020</strong>,
+                    consulte outro posto de sua preferência. Caso não existam outros postos de sua preferência com data disponível,
+                    tente novamente mais tarde. As agendas são dinâmicas e, por isso, vagas podem surgir a qualquer momento.
+                </p>
+
+
+
+
+
+
+                <div class="row margem_acima_dobro margem_abaixo_dobro">
+                    <div class="col-md-4">
+                        <div id="calendario"></div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-5"><label for="dataAtendimento">Selecione a data de atendimento:</label></div>
+                            <div class="col-md-7">
+                                <select name="dataAtendimento" onchange="recarregarEfetuarAgendamento()" id="dataAtendimento"><option value="" selected="selected"></option></select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-7" id="mensagemAlerta">
+                        <p><font color="red">Sua vaga ainda <b>não</b> está reservada. Se está certo de sua escolha, clique no botão "Confirmar" logo abaixo.</font></p>
+                    </div>
+                </div>
+
+                <h2>Dados pessoais</h2>
+                <div class="row">
+                    <div class="col-md-3">
+                        <strong>Número do protocolo:</strong>
+                    </div>
+                    <div class="col-md-6">
+                        1.2020.0000767155
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <strong>Nome completo:</strong>
+                    </div>
+                    <div class="col-md-6">
+                        ANA CLÁUDIA SALVADOR JAEN ESQUIÇATO
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-3 ">
+                        <strong>Telefone:</strong>
+                    </div>
+                    <div class="col-md-6">
+                        11983938477
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <strong>E-mail:</strong>
+                    </div>
+                    <div class="col-md-6">
+                        AC.JAEN@GMAIL.COM
+                    </div>
+                </div>
+
+
+                <div class="row margem_acima_dobro">
+                    <div class="col-md-3 col-md-offset-4">
+
+
+
+                        <div id="pote">
+                            <label for="email1" class="hidden" aria-hidden="true">Início do teste anti-spam.</label>
+
+                            <input type="text" id="email1" name="email1" aria-hidden="true" value="" alt="ignore este campo" />
+                            <input type="text" id="email2" name="email2" aria-hidden="true" value="" alt="ignore este campo" />
+                        </div>
+                        <div id="pote2">
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+                <div class="comandos_centro margem_acima_dobro">
+                    <div class="btn-group" role="group" aria-label="Botões de navegação">
+                        <input type="button" name="Confirmar" value="Confirmar" onclick="javascript:confirmarEfetuarAgendamento();"
+                               class="btn btn-primary btn-xs btn-command" title="Confirmar" alt="Confirmar">
+                        <input type="button" name="Voltar" value="Voltar" onclick="javascript:voltarSelecaoPostos();"
+                               class="btn btn-primary btn-xs btn-command" title="Voltar" alt="Voltar">
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <!-- Javascripts -->
+    <a name="arodape" id="arodape" class="sr-only">Fim do conteúdo</a>
+    <a href="#atopo" id="link-topo" accesskey="6" class="sr-only">Voltar para o topo</a>
+
+
+
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/jquery.mask.min.js"></script>
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/jquery.browser.min.js"></script>
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/store.js"></script>
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/rv-jquery-fontsize.min.js"></script>
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" charset="ISO-8859-1" src="/sinpa/jsp/v2/js/sinpa.js"></script>
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/atualizar.browser.js"></script>
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/captcha.js"></script>
+
+    <script type="text/javascript">
+        $("#audio").click(function () {
+            // A caixa de texto não pode receber o foco, pois dispara a leitura
+            //  do nome do campo pelo leitor de tela sobrepondo-se ao áudio do captcha.
+            play_sound("/sinpa/jcaptcha.do?dispatch=audioCaptcha&antiCache=" + Math.random());
+        });
+
+        $("#recarregarCaptcha").click(function () {
+            $("#imgCaptcha").attr("src", "/sinpa/jcaptcha.do?dispatch=imageCaptcha&antiCache=" + Math.random());
+        });
+
+        if ($("#imgCaptcha").length) {
+            setInterval(function () {
+                $("#imgCaptcha").attr("src", "/sinpa/jcaptcha.do?dispatch=imageCaptcha&antiCache=" + Math.random());
+            }, 300000);
+        }
+    </script>
+    <script type="text/javascript" src="/sinpa/jsp/v2/js/agendamento.js"></script>
+
+    <script type="text/javascript">
+        Calendar.setup({
+            flat: "calendario",
+            flatCallback: selecionarData,
+            weekNumbers: false,
+            dateStatusFunc: travarDatas,
+            firstDay: 0
+        });
+    </script>
+
+</body>
+</html>
