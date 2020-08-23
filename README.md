@@ -16,9 +16,9 @@ If you wish to send to report by email, please complete the EmailNotifier class 
 
 ## Tests
 
-In order to ensure that all critical components are working properly with the responses from the portal, a set of unit tests cover some common scenarios and corner cases. The tests uses FluentAssertions and Moq.
+In order to ensure that all critical components are working properly with the responses from the portal, a set of unit tests cover some common scenarios and corner cases. The tests use FluentAssertions to simplify our assertions and Moq to mock resposes from the portal.
 
-## Retriving data
+## Retrieving data
 
 In order to analyze and get data from HTMLs, the program use HtmlAgilityPack, a very nice tool to web scrapping.
 
